@@ -1,0 +1,20 @@
+.header{
+    background: #343a40;
+    border: none;
+    font-size: large;
+    text-align: center;
+    color: white;
+    padding-bottom: 10px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.row{
+    margin-right: -5px;
+    margin-left: -5px;
+}
+
+.sidePanel{
+    background: #f8f9fa;
+
+}
