@@ -9,6 +9,6 @@ Features:
 The application was developed using the OpenWeather API, with 2 calls: (5 day Forecast API + One Call API)
 Includes the use of libraries: jQuery, Bootstrap, and FontAwesome
 
-![Screenshot](weatherdashboard.JPG)
+![Screenshot]("weatherdashboard.JPG")
 
 
