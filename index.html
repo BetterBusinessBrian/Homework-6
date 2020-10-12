@@ -43,7 +43,7 @@
                     <br>
                     <p class="windspeed"></p>
                     <br>
-                    <p class="UVi"></p>
+                    <p><span class= "badge UVi"></span></p>
                 </div>
                 <h3> 5-Day Forecast:</h3>
                 <div class="card-group">
@@ -95,11 +95,15 @@
     <script>
 
         var APIKey = "4c19bdbf48f17cef671da21f63c3f39d";
+        var citiesArray = {}
+        var lastCity = localStorage.getItem("lastCity")
 
-        var cityName = ""
+        getForecast(lastCity);
+
 
         $(".search").on("click", function () {
             cityName = $(".form-control").val();
+            localStorage.setItem("lastCity", cityName)
             getForecast(cityName);
         })
 
@@ -148,6 +152,22 @@
                     $(".windspeed").text("Wind Speed: " + windspeed)
                     $(".UVi").text("UV Index: " + uvIndex);
 
+                    // Changing the UV Index's Color
+                    var UVtest = parseFloat(JSON.stringify(uvIndex))
+                    
+                    if (UVtest < 3){
+                        $(".UVi").addClass("badge-success")
+                    }
+                    if (UVtest > 3){
+                        $(".UVi").addClass("badge-warning")
+                    }
+                    if (UVtest >= 8){
+                        $(".UVi").addClass("badge-danger")
+                    }
+                  
+                
+                  
+
                     //For Loop for creating cards
                     for (i = 1; i < 6; i++) {
                         $(".card-title").each(function () {
@@ -179,6 +199,7 @@
                         });
 
                     }
+
                 });
             });
         };
