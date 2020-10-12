@@ -18,3 +18,11 @@
     background: #f8f9fa;
 
 }
+.forecast{
+    background: #17a2b8;
+    color: white;
+    padding: 5px;
+}
+.card-title{
+    font-size: medium;
+}

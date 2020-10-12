@@ -46,7 +46,43 @@
                     <p class="UVi"></p>
                 </div>
                 <h3> 5-Day Forecast:</h3>
-                <div class=buttonsGroup></div>
+                <div class="card-group">
+                    <div class="card forecast">
+                        <div class="card-body">
+                            <h5 class="card-title" id="1">day</h5>
+                            <p class="card-text forecastTemp" id="1">Temp</p>
+                            <p class="card-text forecastHumid" id="1">Humidity</p>
+                        </div>
+                    </div>
+                    <div class="card forecast">
+                        <div class="card-body">
+                            <h5 class="card-title" id="2">day</h5>
+                            <p class="card-text forecastTemp" id="2">Temp</p>
+                            <p class="card-text forecastHumid" id="2">Humidity</p>
+                        </div>
+                    </div>
+                    <div class="card forecast">
+                        <div class="card-body">
+                            <h5 class="card-title" id="3">day</h5>
+                            <p class="card-text forecastTemp" id="3">Temp</p>
+                            <p class="card-text forecastHumid" id="3">Humidity</p>
+                        </div>
+                    </div>
+                    <div class="card forecast">
+                        <div class="card-body">
+                            <h5 class="card-title" id="4">day</h5>
+                            <p class="card-text forecastTemp" id="4">Temp</p>
+                            <p class="card-text forecastHumid" id="4">Humidity</p>
+                        </div>
+                    </div>
+                    <div class="card forecast">
+                        <div class="card-body">
+                            <h5 class="card-title" id="5">day</h5>
+                            <p class="card-text forecastTemp" id="5">Temp</p>
+                            <p class="card-text forecastHumid" id="5">Humidity</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -60,9 +96,9 @@
 
         var APIKey = "4c19bdbf48f17cef671da21f63c3f39d";
 
-        var cityName= ""
+        var cityName = ""
 
-        $(".search").on("click", function(){
+        $(".search").on("click", function () {
             cityName = $(".form-control").val();
             getForecast(cityName);
         })
@@ -81,14 +117,14 @@
                 var lon = response.city.coord["lon"];
                 var cityDetail = response;
                 var cityTitle = cityDetail.city.name;
-                
+
                 // Setting Date
                 var d = new Date();
                 var month = d.getMonth() + 1;
                 var day = d.getDate();
-                var year =d.getFullYear()
+                var year = d.getFullYear()
                 var date = "(" + (day < 10 ? '0' : '') + day + '/' +
-                    (month < 10 ? '0' : '') + month + '/' + year +")";
+                    (month < 10 ? '0' : '') + month + '/' + year + ")";
 
                 // Displaying from first API
                 $(".cityName").text(cityTitle + " - " + date)
@@ -101,27 +137,53 @@
                     method: "GET"
                 }).then(function (response) {
                     console.log(response);
-                    function convertKelvin(x){
-                        x = ((x -273.15)*1.8)+32
-                        return x;
-                    }
+                    // Update Current Data
                     var temp = Math.round(response.current.temp) + "°"
                     var humidity = response.current.humidity + "%"
                     var windspeed = response.current.wind_speed + "MPH"
-                    var uvIndex = response.current.uvi 
+                    var uvIndex = response.current.uvi
 
                     $(".temp").text("Temperature: " + temp);
                     $(".humid").text("Humdity: " + humidity);
                     $(".windspeed").text("Wind Speed: " + windspeed)
                     $(".UVi").text("UV Index: " + uvIndex);
 
-                    
-                
+                    //For Loop for creating cards
+                    for (i = 1; i < 6; i++) {
+                        $(".card-title").each(function () {
+                            var index = parseInt($(this).attr('id'))
+                            if (i == index) {
+                                var d = new Date(response.daily[i].dt * 1000)
+                                var month = d.getMonth() + 1;
+                                var day = d.getDate();
+                                var year = d.getFullYear()
+                                var date = "(" + (day < 10 ? '0' : '') + day + '/' +
+                                    (month < 10 ? '0' : '') + month + '/' + year + ")";
+                                $(this).text(date)
+                            }
+                            $(".forecastTemp").each(function () {
+                                var index = parseInt($(this).attr('id'))
+                                if (i == index) {
+                                    var forecastTemp = "Temp: " + Math.round(response.daily[i].temp.day) + "°"
+                                    $(this).text(forecastTemp)
+                                }
+                            })
+                            $(".forecastHumid").each(function () {
+                                var index = parseInt($(this).attr('id'))
+                                if (i == index) {
+                                    var forecastHumid = "Humidity: " + response.daily[i].humidity + "%";
+                                    $(this).text(forecastHumid);
+                                }
+                            })
 
-                })
-            })
+                        });
 
-        }
+                    }
+                });
+            });
+        };
+
+
     </script>
 
 </body>
