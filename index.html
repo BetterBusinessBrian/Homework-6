@@ -36,48 +36,55 @@
             <div class="col-8">
                 <br>
                 <div class="card">
-                    <h2 class="cityName"></h2>
-                    <p class="temp"></p>
+                    <span class= "card-header">
+                        <h2 class="cityName" style='display:inline;'></h2><img class="headIcon  border rounded">
+                    </span>
+                    <p class="temp topText"></p>
                     <br>
-                    <p class="humid"></p>
+                    <p class="humid topText"></p>
                     <br>
-                    <p class="windspeed"></p>
+                    <p class="windspeed topText"></p>
                     <br>
-                    <p><span class= "badge UVi"></span></p>
+                    <p><span class="badge UVi topText"></span></p>
                 </div>
                 <h3> 5-Day Forecast:</h3>
                 <div class="card-group">
-                    <div class="card forecast">
+                    <div class="card m-1 forecast">
                         <div class="card-body">
                             <h5 class="card-title" id="1">day</h5>
+                            <img class="icon" id="1">
                             <p class="card-text forecastTemp" id="1">Temp</p>
                             <p class="card-text forecastHumid" id="1">Humidity</p>
                         </div>
                     </div>
-                    <div class="card forecast">
+                    <div class="card m-1 forecast">
                         <div class="card-body">
                             <h5 class="card-title" id="2">day</h5>
+                            <img class="icon" id="2">
                             <p class="card-text forecastTemp" id="2">Temp</p>
                             <p class="card-text forecastHumid" id="2">Humidity</p>
                         </div>
                     </div>
-                    <div class="card forecast">
+                    <div class="card m-1 forecast">
                         <div class="card-body">
                             <h5 class="card-title" id="3">day</h5>
+                            <img class="icon" id="3">
                             <p class="card-text forecastTemp" id="3">Temp</p>
                             <p class="card-text forecastHumid" id="3">Humidity</p>
                         </div>
                     </div>
-                    <div class="card forecast">
+                    <div class="card m-1 forecast">
                         <div class="card-body">
                             <h5 class="card-title" id="4">day</h5>
+                            <img class="icon" id="4">
                             <p class="card-text forecastTemp" id="4">Temp</p>
                             <p class="card-text forecastHumid" id="4">Humidity</p>
                         </div>
                     </div>
-                    <div class="card forecast">
+                    <div class="card m-1 forecast">
                         <div class="card-body">
                             <h5 class="card-title" id="5">day</h5>
+                            <img class="icon" id="5">
                             <p class="card-text forecastTemp" id="5">Temp</p>
                             <p class="card-text forecastHumid" id="5">Humidity</p>
                         </div>
@@ -91,121 +98,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript"></script>
-    <script>
-
-        var APIKey = "4c19bdbf48f17cef671da21f63c3f39d";
-        var citiesArray = {}
-        var lastCity = localStorage.getItem("lastCity")
-
-        getForecast(lastCity);
-
-
-        $(".search").on("click", function () {
-            cityName = $(".form-control").val();
-            localStorage.setItem("lastCity", cityName)
-            getForecast(cityName);
-        })
-
-        function getForecast(cityName) {
-
-            var city = cityName;
-            var queryUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + APIKey
-
-            $.ajax({
-                url: queryUrl,
-                method: "GET"
-            }).then(function (response) {
-
-                var lat = response.city.coord["lat"];
-                var lon = response.city.coord["lon"];
-                var cityDetail = response;
-                var cityTitle = cityDetail.city.name;
-
-                // Setting Date
-                var d = new Date();
-                var month = d.getMonth() + 1;
-                var day = d.getDate();
-                var year = d.getFullYear()
-                var date = "(" + (day < 10 ? '0' : '') + day + '/' +
-                    (month < 10 ? '0' : '') + month + '/' + year + ")";
-
-                // Displaying from first API
-                $(".cityName").text(cityTitle + " - " + date)
-
-
-                var queryUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&exclude=hourly,minutely,alert&appid=510c7f3ff27ad1727021b6aa3db8d1b0"
-
-                $.ajax({
-                    url: queryUrl,
-                    method: "GET"
-                }).then(function (response) {
-                    console.log(response);
-                    // Update Current Data
-                    var temp = Math.round(response.current.temp) + "°"
-                    var humidity = response.current.humidity + "%"
-                    var windspeed = response.current.wind_speed + "MPH"
-                    var uvIndex = response.current.uvi
-
-                    $(".temp").text("Temperature: " + temp);
-                    $(".humid").text("Humdity: " + humidity);
-                    $(".windspeed").text("Wind Speed: " + windspeed)
-                    $(".UVi").text("UV Index: " + uvIndex);
-
-                    // Changing the UV Index's Color
-                    var UVtest = parseFloat(JSON.stringify(uvIndex))
-                    
-                    if (UVtest < 3){
-                        $(".UVi").addClass("badge-success")
-                    }
-                    if (UVtest > 3){
-                        $(".UVi").addClass("badge-warning")
-                    }
-                    if (UVtest >= 8){
-                        $(".UVi").addClass("badge-danger")
-                    }
-                  
-                
-                  
-
-                    //For Loop for creating cards
-                    for (i = 1; i < 6; i++) {
-                        $(".card-title").each(function () {
-                            var index = parseInt($(this).attr('id'))
-                            if (i == index) {
-                                var d = new Date(response.daily[i].dt * 1000)
-                                var month = d.getMonth() + 1;
-                                var day = d.getDate();
-                                var year = d.getFullYear()
-                                var date = "(" + (day < 10 ? '0' : '') + day + '/' +
-                                    (month < 10 ? '0' : '') + month + '/' + year + ")";
-                                $(this).text(date)
-                            }
-                            $(".forecastTemp").each(function () {
-                                var index = parseInt($(this).attr('id'))
-                                if (i == index) {
-                                    var forecastTemp = "Temp: " + Math.round(response.daily[i].temp.day) + "°"
-                                    $(this).text(forecastTemp)
-                                }
-                            })
-                            $(".forecastHumid").each(function () {
-                                var index = parseInt($(this).attr('id'))
-                                if (i == index) {
-                                    var forecastHumid = "Humidity: " + response.daily[i].humidity + "%";
-                                    $(this).text(forecastHumid);
-                                }
-                            })
-
-                        });
-
-                    }
-
-                });
-            });
-        };
-
-
-    </script>
+    <script type="text/javascript" src="script.js"></script>
 
 </body>
 

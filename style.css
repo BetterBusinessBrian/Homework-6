@@ -24,5 +24,21 @@
     padding: 5px;
 }
 .card-title{
-    font-size: medium;
+    font-size: 14px;
+}
+.card-text{
+    font-size: 14px;
+}
+.historyButton{
+    background: #17a2b8;
+    margin: 3px;
+}
+.topText{
+    margin: 5px;
+}
+.headIcon{
+    background: #17a2b8;
+}
+.cityName{
+    margin: 5px;
 }
